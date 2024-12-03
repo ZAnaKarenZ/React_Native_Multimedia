@@ -5,7 +5,7 @@ import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import React, { useState, useEffect } from 'react';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Audio } from 'expo-av';
+import { Audio, AVPlaybackStatus } from 'expo-av';
 import { createTables, getAllMusicTracks, getAllImages, MusicTrack, ImageFile} from '@/database/DatosSqlite';
 import * as SQLite from 'expo-sqlite';
 
@@ -16,7 +16,9 @@ export default function HomeScreen() {
   const [modalVisible, setModalVisible] = useState(false);
   const [currentTrackIndex, setCurrentTrackIndex] = useState<number | null>(null);
   const [sound, setSound] = useState<Audio.Sound | null>(null);
-  
+  const [isPlaying, setIsPlaying] = useState(false);
+
+  //Inicializar
   useEffect(() => {
     const initializeDatabase = async () => {
       const database = await createTables();
@@ -33,12 +35,52 @@ export default function HomeScreen() {
     initializeDatabase();
   }, []);
 
+
+  //Open modal when clicking on an album cover
   const openModal = (index: number) => {
     setModalVisible(true);
+    loadTrack(index);
   };
   const closeModal = () => {
     setModalVisible(false);
   };
+
+  // Function to play or pause the current track
+const togglePlayPause = async () => {
+  if (sound) {
+    const status = await sound.getStatusAsync();
+    if (status.isLoaded && status.isPlaying) {
+      // Pause the track
+      await sound.pauseAsync();
+      setIsPlaying(false);
+    } else if (status.isLoaded) {
+      // Play the track
+      await sound.playAsync();
+      setIsPlaying(true);
+    }
+  }
+};
+
+
+// Load the selected track into the Audio.Sound object
+const loadTrack = async (index: number) => {
+  if (sound) {
+    await sound.unloadAsync();
+  }
+
+  const newSound = new Audio.Sound();
+  const track = musicTracks[index];
+
+  try {
+    await newSound.loadAsync({ uri: track.url });
+    setSound(newSound);
+    setCurrentTrackIndex(index);
+    setIsPlaying(false); // Initially paused
+  } catch (error) {
+    console.error('Error loading track:', error);
+  }
+};
+
 
   return (
     <View style={styles.container}>
@@ -71,6 +113,14 @@ export default function HomeScreen() {
           <TouchableOpacity onPress={closeModal} style={styles.closeButton}>
             <Text style={styles.closeButtonText}>Close</Text>
           </TouchableOpacity>
+        <Text style={styles.modalTitle}>
+          {currentTrackIndex !== null ? musicTracks[currentTrackIndex]?.title : 'No track selected'}
+        </Text>
+        <TouchableOpacity onPress={togglePlayPause} style={styles.playPauseButton}>
+          <Text style={styles.controlButton}>
+            {isPlaying ? 'Pause' : 'Play'}
+          </Text>
+        </TouchableOpacity>
         </View>
       </Modal>
     </View>
@@ -118,10 +168,33 @@ const styles = StyleSheet.create({
     width: 200,
     height: 200,
   },
-  modalContainer: { flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0, 0, 0, 0.8)'},
-  modalTitle: { fontSize: 20, color: 'white', marginBottom: 20 },
-  controls: { flexDirection: 'row', justifyContent: 'space-evenly', width: '80%' },
-  controlButton: { fontSize: 30, color: 'white' },
-  closeButton: { backgroundColor: 'cornflowerblue', padding: 10, borderRadius: 5 },
-  closeButtonText: { color: 'white', fontSize: 16 },
+  modalContainer: { 
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.8)'
+  },
+  modalTitle: { 
+    fontSize: 20,
+    color: 'white',
+    marginBottom: 20 
+  },
+  controls: { 
+    flexDirection: 'row', 
+    justifyContent: 'space-evenly', 
+    width: '80%' 
+  },
+  controlButton: { 
+    fontSize: 30, 
+    color: 'white' 
+  },
+  closeButton: { 
+    backgroundColor: 'cornflowerblue', 
+    padding: 10, 
+    borderRadius: 5 
+  },
+  closeButtonText: {
+     color: 'white',
+     fontSize: 16 
+  },
 });

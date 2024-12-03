@@ -21,19 +21,19 @@ export const createTables = async() =>{
       author TEXT NOT NULL,
       url TEXT NOT NULL);
 
-      INSERT INTO music (title, author, duration, url) VALUES ('Reflection', 'Broken Elegance', '5:10', 'https://www.youtube.com/watch?v=c5La0HvSjwM');
+      INSERT INTO music (title, author, duration, url) VALUES ('Reflection', 'Broken Elegance', '5:10', 'https://izsqkjgolwzqkkddexcg.supabase.co/storage/v1/object/public/Songs/Broken%20Elegance%20-%20Reflection.mp3?t=2024-12-02T23%3A31%3A24.736Z');
       INSERT INTO images (title, author, url) VALUES ('Reflection', 'Broken Elegance', 'https://is1-ssl.mzstatic.com/image/thumb/Music20/v4/28/53/b7/2853b74e-400a-f023-5a4a-ae39792ac2d1/5054316522331_cover.jpg/592x592bb.webp');
       
-      INSERT INTO music (title, author, duration, url) VALUES ('Evergreen', 'Pekoe', '3:07', 'https://www.youtube.com/watch?v=lTjBbMVDKjI');
+      INSERT INTO music (title, author, duration, url) VALUES ('Evergreen', 'Pekoe', '3:07', 'https://izsqkjgolwzqkkddexcg.supabase.co/storage/v1/object/public/Songs/Pekoe%20-%20Evergreen.mp3?t=2024-12-02T23%3A31%3A44.910Z');
       INSERT INTO images (title, author, url) VALUES ('Evergreen', 'Pekoe', 'https://i1.sndcdn.com/artworks-000101310410-0mt1p7-t500x500.jpg');
-            
-      INSERT INTO music (title, author, duration, url) VALUES ('Battle Scars', 'Paradise Fears', '4:48', 'https://www.youtube.com/watch?v=VWTYYPqDtN8');
-      INSERT INTO images (title, author, url) VALUES ('Battle Scars', 'Pekoe', 'https://is1-ssl.mzstatic.com/image/thumb/Music2/v4/ae/b5/e1/aeb5e137-ad51-f496-9e25-ba39237d5f79/954624.jpg/592x592bb.webp');
-      
-      INSERT INTO music (title, author, duration, url) VALUES ('Unconditionally', 'Katy Perry', '3:48', 'https://i.scdn.co/image/ab67616d0000b273805c70a26d37288c7b820440');
+
+      INSERT INTO music (title, author, duration, url) VALUES ('Battle Scars', 'Paradise Fears', '4:48', 'https://izsqkjgolwzqkkddexcg.supabase.co/storage/v1/object/public/Songs/Battle%20Scars.mp3?t=2024-12-02T23%3A30%3A19.959Z');
+      INSERT INTO images (title, author, url) VALUES ('Battle Scars', 'Paradise Fears', 'https://is1-ssl.mzstatic.com/image/thumb/Music2/v4/ae/b5/e1/aeb5e137-ad51-f496-9e25-ba39237d5f79/954624.jpg/592x592bb.webp');
+
+      INSERT INTO music (title, author, duration, url) VALUES ('Unconditionally', 'Katy Perry', '3:48', 'https://izsqkjgolwzqkkddexcg.supabase.co/storage/v1/object/public/Songs/Unconditionally.mp3?t=2024-12-02T23%3A33%3A45.937Z');
       INSERT INTO images (title, author, url) VALUES ('Unconditionally', 'Katy Perry', 'https://i1.sndcdn.com/artworks-000066243129-s08xsj-t500x500.jpg');
 
-      INSERT INTO music (title, author, duration, url) VALUES ('We ll meet again', 'The Fat Rat & Laura Brehm', '3:15', 'https://www.youtube.com/watch?v=hJqYc62NCKo');
+      INSERT INTO music (title, author, duration, url) VALUES ('We ll meet again', 'The Fat Rat & Laura Brehm', '3:15', 'https://izsqkjgolwzqkkddexcg.supabase.co/storage/v1/object/public/Songs/TheFatRat%20&%20Laura%20Brehm%20-%20We%20ll%20Meet%20Again.mp3?t=2024-12-03T11%3A10%3A23.866Z');
       INSERT INTO images (title, author, url) VALUES ('We ll meet again', 'The Fat Rat & Laura Brehm', 'https://i1.sndcdn.com/artworks-LcKYiC6kwkuiezUc-aFwzdQ-t500x500.jpg');
 
       `);     
