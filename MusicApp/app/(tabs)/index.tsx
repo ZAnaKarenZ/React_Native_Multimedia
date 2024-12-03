@@ -81,6 +81,19 @@ const loadTrack = async (index: number) => {
   }
 };
 
+//Change track if clicked on previous or next
+const changeTrack = async (direction: 'previous' | 'next') => {
+  if (currentTrackIndex === null) return;
+
+  let newIndex = currentTrackIndex;
+  if (direction === 'previous') {
+    newIndex = currentTrackIndex > 0 ? currentTrackIndex - 1 : musicTracks.length - 1; // Loop to the last track
+  } else if (direction === 'next') {
+    newIndex = (currentTrackIndex + 1) % musicTracks.length; // Loop to the first track
+  }
+
+  loadTrack(newIndex);
+};
 
   return (
     <View style={styles.container}>
@@ -97,13 +110,13 @@ const loadTrack = async (index: number) => {
 
     <TouchableOpacity key={index} onPress={() => openModal(index)}>
       <View key={index}>
-      <Image
-        source={{ uri: image.url }}
-        style={styles.image}
-        resizeMode="cover"
-      />
-      <Text>{`Title: ${image.title}`}</Text>
-      <Text>{`Author: ${image.author}`}</Text>
+        <Image
+          source={{ uri: image.url }}
+          style={styles.image}
+          resizeMode="cover"
+        />
+        <Text>{`Title: ${image.title}`}</Text>
+        <Text>{`Author: ${image.author}`}</Text>
       </View>
       </TouchableOpacity>
     ))}
@@ -113,14 +126,27 @@ const loadTrack = async (index: number) => {
           <TouchableOpacity onPress={closeModal} style={styles.closeButton}>
             <Text style={styles.closeButtonText}>Close</Text>
           </TouchableOpacity>
+          {currentTrackIndex !== null && images[currentTrackIndex] && (
+        <Image
+          source={{ uri: images[currentTrackIndex].url }}
+          style={styles.modalImage}
+          resizeMode="contain"
+        />
+        )}
         <Text style={styles.modalTitle}>
           {currentTrackIndex !== null ? musicTracks[currentTrackIndex]?.title : 'No track selected'}
         </Text>
-        <TouchableOpacity onPress={togglePlayPause} style={styles.playPauseButton}>
-          <Text style={styles.controlButton}>
-            {isPlaying ? 'Pause' : 'Play'}
-          </Text>
-        </TouchableOpacity>
+        <View style={styles.controls}>
+      <TouchableOpacity onPress={() => changeTrack('previous')} style={styles.controlButtonContainer}>
+        <Text style={styles.controlButton}>{'<<'}</Text>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={togglePlayPause} style={styles.controlButtonContainer}>
+        <Text style={styles.controlButton}>{isPlaying ? 'Pause' : 'Play'}</Text>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => changeTrack('next')} style={styles.controlButtonContainer}>
+        <Text style={styles.controlButton}>{'>>'}</Text>
+      </TouchableOpacity>
+    </View>
         </View>
       </Modal>
     </View>
@@ -181,12 +207,19 @@ const styles = StyleSheet.create({
   },
   controls: { 
     flexDirection: 'row', 
-    justifyContent: 'space-evenly', 
+    justifyContent: 'space-between', 
+    alignItems: 'center',
     width: '80%' 
+  },
+  controlButtonContainer: { 
+    padding: 10, 
+    borderRadius: 5, 
+    backgroundColor: 'cornflowerblue' 
   },
   controlButton: { 
     fontSize: 30, 
-    color: 'white' 
+    color: 'white',
+    textAlign: 'center'
   },
   closeButton: { 
     backgroundColor: 'cornflowerblue', 
@@ -196,5 +229,11 @@ const styles = StyleSheet.create({
   closeButtonText: {
      color: 'white',
      fontSize: 16 
+  },
+  modalImage: {
+    width: 300,
+    height: 300,
+    marginBottom: 20,
+    borderRadius: 10,
   },
 });
